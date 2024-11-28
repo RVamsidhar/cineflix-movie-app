@@ -1,60 +1,26 @@
 import React from "react";
-import { useState } from "react";
+import { TMDB_ORIGINAL_IMAGE_PATH } from "../constants";
 
-export const MovieCard = ({
-  movie,
-  handleFavouriteClick,
-  favouriteComponent,
-}) => {
-  const [movieCardIsHovered, setMovieCardIsHovered] = useState(false);
-
-  const HoverMovieCard = () => {
-    return (
-      <>
-        <div className="hoverMovieCard" onMouseLeave={handleMouseLeave}>
-          <img
-            src={movie.Poster}
-            alt={movie.Title + " Poster"}
-            className="moviePoster"
-            width="275"
-            height="400"
-          />
-          <div className="hoverMovieCardText" style={{ color: "white" }}>
-            {movie.plot}
+export const MovieCard = ({ movie, onMovieClick }) => {
+  return (
+    <div
+      className="group relative hover:cursor-pointer hover:overflow-hidden"
+      onClick={() => onMovieClick(movie)}
+    >
+      <div className="h-full w-full">
+        <img
+          className="group-hover:scale-110 group-hover:transition-transform group-hover:duration-300 group-hover:ease-in"
+          src={TMDB_ORIGINAL_IMAGE_PATH + movie.poster_path}
+          alt={movie.title}
+          width="225"
+          height="350"
+        />
+        <div className="absolute inset-0 bg-slate-400 bg-opacity-50 bg-gradient-to-t from-gray-950 to-gray-950/[.7] opacity-0 transition-opacity duration-300 group-hover:bottom-0 group-hover:opacity-100">
+          <div className="absolute bottom-0 flex w-full items-end justify-between text-ellipsis p-6">
+            <span className="line-clamp-1 text-ellipsis">{movie.title}</span>
+            <span>⭐{movie.vote_average.toFixed(1)}/10</span>
           </div>
         </div>
-      </>
-    );
-  };
-
-  const FavouriteComponent = favouriteComponent;
-
-  const handleMouseEnter = (event) => {
-    console.log("Entered");
-    event.stopPropagation();
-    setMovieCardIsHovered(!movieCardIsHovered);
-  };
-
-  const handleMouseLeave = (event) => {
-    console.log("Left");
-    event.stopPropagation();
-    setMovieCardIsHovered(!movieCardIsHovered);
-  };
-
-  return (
-    <div className="movieCard" onMouseEnter={handleMouseEnter}>
-      <img
-        src={movie.Poster}
-        alt={movie.Title + " Poster"}
-        className="moviePoster"
-        width="275"
-        height="400"
-      />
-      <div className="overlay">
-        <FavouriteComponent
-          movie={movie}
-          handleFavouriteClick={handleFavouriteClick}
-        />
       </div>
     </div>
   );

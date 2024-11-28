@@ -1,103 +1,86 @@
 import "./App.css";
-import { useEffect, useState } from "react";
-import { MovieList } from "./components/MovieList";
+import { useCallback, useEffect, useState } from "react";
 import { SearchBox } from "./components/SearchBox";
-import { AddFavourites } from "./components/AddFavourites";
-import RemoveFavourites from "./components/RemoveFavourites";
+import { ModelOverlay } from "./components/ModalOverlay";
+import { MovieCard } from "./components/MovieCard";
 
 function App() {
-  const [movies, setMovies] = useState([]);
-  const [favourites, setFavourites] = useState([]);
-  const [searchValue, setSearchValue] = useState("avengers");
-
-  useEffect(() => {
-    const movieFavourites = JSON.parse(
-      localStorage.getItem("movie-app-favourites")
+  const [searchValue, setSearchValue] = useState("");
+  const [moviesList, setMoviesList] = useState([]);
+  const [isModelPopupOpen, setIsModelPopupOpen] = useState(false);
+  const [modelMovie, setModelMovie] = useState();
+  const fetchData = useCallback(async () => {
+    let response = await fetch(
+      `https://api.themoviedb.org/3/movie/popular?api_key=${process.env.REACT_APP_TMDB_API_ACCESS_KEY}&language=en-US&page=1`
     );
-    setFavourites(movieFavourites);
+    return await response.json();
   }, []);
 
   useEffect(() => {
-    async function getMovieList() {
-      const url = `http://www.omdbapi.com/?s=${searchValue}&apikey=d4f28cda`;
-      const data = await fetch(url);
-      console.log("Data is ", data);
-      const responseData = await data.json();
-      console.log("response data is ", responseData);
-      setMovies(responseData["Search"]);
-    }
-    getMovieList();
-  }, [searchValue]);
+    let ignore = false;
 
-  const saveToLocalStorage = (items) => {
-    localStorage.setItem("movie-app-favourites", JSON.stringify(items));
-  };
-
-  const actionFavouriteClick = (movie) => {
-    let isFound = false;
-    console.log("Favourites are ", favourites);
-    if (Array.isArray(favourites)) {
-      for (let i = 0; i < favourites.length; i++) {
-        if (favourites[i].imdbID === movie.imdbID) {
-          isFound = true;
-        }
-      }
+    if (!ignore) {
+      fetchData().then((list) => {
+        setMoviesList(list.results);
+      });
     }
 
-    if (!isFound) {
-      let newFavourites;
-      if (Array.isArray(favourites)) {
-        newFavourites = [...favourites, movie];
-      } else {
-        newFavourites = [movie];
-      }
-      setFavourites(newFavourites);
-      saveToLocalStorage(newFavourites);
-    }
-  };
+    return () => {
+      ignore = true;
+    };
+  }, [fetchData]);
 
-  const removeFavouriteMovie = (movie) => {
-    const newFavouriteList = favourites.filter(
-      (favourite) => favourite.imdbID !== movie.imdbID
+  const handleMovieClick = async (movie) => {
+    let response = await fetch(
+      `https://api.themoviedb.org/3/movie/${movie.id}?api_key=${process.env.REACT_APP_TMDB_API_ACCESS_KEY}&append_to_response=videos%2Cimages&language=en-US`
     );
+    let movieData = await response.json();
+    setIsModelPopupOpen(true);
+    setModelMovie(movieData);
+    document.body.style.overflow = "hidden";
+  };
 
-    setFavourites(newFavouriteList);
-    saveToLocalStorage(newFavouriteList);
+  const onHomeButtonClick = () => {
+    fetchData().then((list) => {
+      setMoviesList(list.results);
+    });
+    setSearchValue("");
   };
 
   return (
-    <div className="container">
-      <header className="headerWrapper">
-        <span className="headerTitle">Cinemate</span>
-        <SearchBox searchValue={searchValue} setSearchValue={setSearchValue} />
+    <div className="flex flex-col gap-4">
+      <header className="grid grid-cols-3">
+        <button onClick={onHomeButtonClick} className="place-self-start">
+          <span className="headerTitle">CINEFLIX</span>
+        </button>
+        <SearchBox
+          searchValue={searchValue}
+          setSearchValue={setSearchValue}
+          setMoviesList={setMoviesList}
+        />
       </header>
       <main>
-        {Array.isArray(movies) && movies.length > 0 && (
-          <div className="movies">
-            <h2 className="moviesTitle">Movies</h2>
-            <div className="movieListWrapper">
-              <MovieList
-                movies={movies}
-                handleFavouriteClick={actionFavouriteClick}
-                favouriteComponent={AddFavourites}
-              />
-            </div>
-          </div>
-        )}
-        {Array.isArray(favourites) && favourites.length > 0 && (
-          <div className="favourties">
-            <h2 className="favTitle">Favourites</h2>
-            <div className="favouritesWrapper">
-              <MovieList
-                movies={favourites}
-                handleFavouriteClick={removeFavouriteMovie}
-                favouriteComponent={RemoveFavourites}
-              />
-            </div>
-          </div>
+        <div className="m-4 grid grid-cols-2 justify-items-center gap-y-20 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
+          {Array.isArray(moviesList) &&
+            moviesList.length > 0 &&
+            moviesList.map((movie) => {
+              return (
+                <MovieCard
+                  key={movie.id}
+                  movie={movie}
+                  onMovieClick={handleMovieClick}
+                />
+              );
+            })}
+        </div>
+        {isModelPopupOpen && (
+          <ModelOverlay
+            movie={modelMovie}
+            setIsModelPopupOpen={setIsModelPopupOpen}
+          />
         )}
       </main>
-      <footer>Made by Vamsi</footer>
+      <footer>Developed by Vamsi</footer>
     </div>
   );
 }
