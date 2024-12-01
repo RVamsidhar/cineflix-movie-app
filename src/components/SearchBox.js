@@ -38,7 +38,7 @@ export const SearchBox = ({
     <>
       <input
         type="text"
-        className="search justify-self-center rounded-full focus:h-10 focus:bg-[#333]"
+        className="h-10 w-80 self-center justify-self-center rounded-full bg-[#333] p-4 placeholder:ml-3 placeholder:text-[1.2em]"
         placeholder="Search"
         onChange={handleSearch}
         value={searchValue}

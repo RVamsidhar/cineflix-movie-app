@@ -73,9 +73,11 @@ function App() {
 
   return (
     <div className="flex flex-col gap-4">
-      <header className="grid grid-cols-3">
+      <header className="m-4 grid grid-cols-3">
         <button onClick={handleHomePageReset} className="place-self-start">
-          <span className="headerTitle">CINEFLIX</span>
+          <span className="mx-4 my-8 rounded px-0 py-2 text-5xl font-bold text-[#db2944]">
+            CINEFLIX
+          </span>
         </button>
         <SearchBox
           searchValue={searchValue}
@@ -128,7 +130,7 @@ function App() {
           </div>
         )}
       </main>
-      <footer>Developed by Vamsi</footer>
+      <footer className="m-8 text-center text-xl">Developed by Vamsi</footer>
     </div>
   );
 }
