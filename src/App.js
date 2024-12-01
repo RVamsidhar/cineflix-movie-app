@@ -3,18 +3,32 @@ import { useCallback, useEffect, useState } from "react";
 import { SearchBox } from "./components/SearchBox";
 import { ModelOverlay } from "./components/ModalOverlay";
 import { MovieCard } from "./components/MovieCard";
+import { getMovieDetailsApi, getPopularMoviesApi } from "./utils/utils";
+import ReactPaginate from "react-paginate";
+import {
+  NUMBER1,
+  NUMBER2,
+  NUMBER4,
+  NUMBER500,
+  NUMBER501,
+  ZERO,
+} from "./utils/constants";
 
 function App() {
   const [searchValue, setSearchValue] = useState("");
   const [moviesList, setMoviesList] = useState([]);
   const [isModelPopupOpen, setIsModelPopupOpen] = useState(false);
   const [modelMovie, setModelMovie] = useState();
+  const [pageNumber, setPageNumber] = useState(NUMBER1);
+  const [pageCount, setPageCount] = useState(NUMBER501);
+  const [inSearchMode, setInSearchMode] = useState(false);
+
   const fetchData = useCallback(async () => {
     let response = await fetch(
-      `https://api.themoviedb.org/3/movie/popular?api_key=${process.env.REACT_APP_TMDB_API_ACCESS_KEY}&language=en-US&page=1`
+      getPopularMoviesApi(process.env.REACT_APP_TMDB_API_ACCESS_KEY, pageNumber)
     );
     return await response.json();
-  }, []);
+  }, [pageNumber]);
 
   useEffect(() => {
     let ignore = false;
@@ -22,6 +36,9 @@ function App() {
     if (!ignore) {
       fetchData().then((list) => {
         setMoviesList(list.results);
+        if (list.total_pages <= NUMBER500) {
+          setPageCount(list.total_pages + NUMBER1);
+        }
       });
     }
 
@@ -32,7 +49,7 @@ function App() {
 
   const handleMovieClick = async (movie) => {
     let response = await fetch(
-      `https://api.themoviedb.org/3/movie/${movie.id}?api_key=${process.env.REACT_APP_TMDB_API_ACCESS_KEY}&append_to_response=videos%2Cimages&language=en-US`
+      getMovieDetailsApi(process.env.REACT_APP_TMDB_API_ACCESS_KEY, movie.id)
     );
     let movieData = await response.json();
     setIsModelPopupOpen(true);
@@ -40,29 +57,38 @@ function App() {
     document.body.style.overflow = "hidden";
   };
 
-  const onHomeButtonClick = () => {
+  const handleHomePageReset = () => {
+    setPageNumber(NUMBER1);
+    setPageCount(NUMBER501);
+    setInSearchMode(false);
+    setSearchValue("");
     fetchData().then((list) => {
       setMoviesList(list.results);
     });
-    setSearchValue("");
+  };
+
+  const handlePaginate = (page) => {
+    setPageNumber(page.selected + NUMBER1);
   };
 
   return (
     <div className="flex flex-col gap-4">
       <header className="grid grid-cols-3">
-        <button onClick={onHomeButtonClick} className="place-self-start">
+        <button onClick={handleHomePageReset} className="place-self-start">
           <span className="headerTitle">CINEFLIX</span>
         </button>
         <SearchBox
           searchValue={searchValue}
           setSearchValue={setSearchValue}
           setMoviesList={setMoviesList}
+          setInSearchMode={setInSearchMode}
+          handleHomePageReset={handleHomePageReset}
         />
       </header>
       <main>
         <div className="m-4 grid grid-cols-2 justify-items-center gap-y-20 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6">
           {Array.isArray(moviesList) &&
-            moviesList.length > 0 &&
+            moviesList.length > ZERO &&
             moviesList.map((movie) => {
               return (
                 <MovieCard
@@ -78,6 +104,28 @@ function App() {
             movie={modelMovie}
             setIsModelPopupOpen={setIsModelPopupOpen}
           />
+        )}
+        {!inSearchMode && (
+          <div className="mt-16 flex justify-center">
+            <ReactPaginate
+              breakLabel="..."
+              nextLabel=">"
+              onPageChange={handlePaginate}
+              pageRangeDisplayed={NUMBER4}
+              marginPagesDisplayed={NUMBER2}
+              pageCount={pageCount - NUMBER1}
+              forcePage={pageNumber - NUMBER1}
+              containerClassName="flex pl-0 list-none"
+              pageLinkClassName="py-[0.375rem] px-[0.75rem] border-[#dee2e6] border-[1px] hover:bg-[#db2944]"
+              previousLinkClassName="py-[0.375rem] px-[0.75rem] border-[#dee2e6] border-[1px] hover:bg-[#db2944]"
+              nextLinkClassName="py-[0.375rem] px-[0.75rem] border-[#dee2e6] border-[1px] hover:bg-[#db2944]"
+              breakLinkClassName="py-[0.375rem] px-[0.75rem] border-[#dee2e6] border-[1px] hover:bg-[#db2944]"
+              activeLinkClassName="bg-[#db2944]"
+              previousLabel="<"
+              disabledLinkClassName="cursor-not-allowed hover:bg-inherit"
+              renderOnZeroPageCount={null}
+            />
+          </div>
         )}
       </main>
       <footer>Developed by Vamsi</footer>

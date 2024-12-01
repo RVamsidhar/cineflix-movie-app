@@ -1,5 +1,5 @@
 import React from "react";
-import { TMDB_ORIGINAL_IMAGE_PATH } from "../constants";
+import { NUMBER1, TMDB_ORIGINAL_IMAGE_PATH, ZERO } from "../utils/constants";
 import { CloseButton } from "./CloseButton";
 
 export const MoviePopupCard = ({ movie, setIsModelPopupOpen }) => {
@@ -9,10 +9,12 @@ export const MoviePopupCard = ({ movie, setIsModelPopupOpen }) => {
         {movie.runtime + "min"} |{" "}
         {movie.genres.reduce((acc, genre, index) => {
           return (
-            acc + genre.name + (index !== movie.genres.length - 1 ? "," : "")
+            acc +
+            genre.name +
+            (index !== movie.genres.length - NUMBER1 ? "," : "")
           );
         }, "")}{" "}
-        | {movie.release_date.split("-")[0]}
+        | {movie.release_date.split("-")[ZERO]}
       </div>
     );
   };
@@ -22,7 +24,7 @@ export const MoviePopupCard = ({ movie, setIsModelPopupOpen }) => {
       <img
         src={TMDB_ORIGINAL_IMAGE_PATH + movie.backdrop_path}
         alt={movie.title + " Poster"}
-        className="absolute top-0 h-full w-full object-cover opacity-25 blur-0"
+        className="absolute top-0 h-full w-full rounded-lg object-cover opacity-25 blur-0"
       />
     );
   };

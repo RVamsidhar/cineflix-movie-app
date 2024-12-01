@@ -1,5 +1,5 @@
 import React from "react";
-import { TMDB_ORIGINAL_IMAGE_PATH } from "../constants";
+import { NUMBER1, TMDB_ORIGINAL_IMAGE_PATH } from "../utils/constants";
 
 export const MovieCard = ({ movie, onMovieClick }) => {
   return (
@@ -18,7 +18,7 @@ export const MovieCard = ({ movie, onMovieClick }) => {
         <div className="absolute inset-0 bg-slate-400 bg-opacity-50 bg-gradient-to-t from-gray-950 to-gray-950/[.7] opacity-0 transition-opacity duration-300 group-hover:bottom-0 group-hover:opacity-100">
           <div className="absolute bottom-0 flex w-full items-end justify-between text-ellipsis p-6">
             <span className="line-clamp-1 text-ellipsis">{movie.title}</span>
-            <span>⭐{movie.vote_average.toFixed(1)}/10</span>
+            <span>⭐{movie.vote_average.toFixed(NUMBER1)}/10</span>
           </div>
         </div>
       </div>
