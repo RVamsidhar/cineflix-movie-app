@@ -118,10 +118,10 @@ function App() {
               pageCount={pageCount - NUMBER1}
               forcePage={pageNumber - NUMBER1}
               containerClassName="flex pl-0 list-none"
-              pageLinkClassName="py-[0.375rem] px-[0.75rem] border-[#dee2e6] border-[1px] hover:bg-[#db2944]"
-              previousLinkClassName="py-[0.375rem] px-[0.75rem] border-[#dee2e6] border-[1px] hover:bg-[#db2944]"
-              nextLinkClassName="py-[0.375rem] px-[0.75rem] border-[#dee2e6] border-[1px] hover:bg-[#db2944]"
-              breakLinkClassName="py-[0.375rem] px-[0.75rem] border-[#dee2e6] border-[1px] hover:bg-[#db2944]"
+              pageLinkClassName="paginate-button"
+              previousLinkClassName="paginate-button"
+              nextLinkClassName="paginate-button"
+              breakLinkClassName="paginate-button"
               activeLinkClassName="bg-[#db2944]"
               previousLabel="<"
               disabledLinkClassName="cursor-not-allowed hover:bg-inherit"
