@@ -69,6 +69,11 @@ function App() {
 
   const handlePaginate = (page) => {
     setPageNumber(page.selected + NUMBER1);
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth",
+    });
   };
 
   return (
@@ -76,7 +81,7 @@ function App() {
       <header className="m-4 grid grid-cols-3">
         <button onClick={handleHomePageReset} className="place-self-start">
           <span className="mx-4 my-8 rounded px-0 py-2 text-5xl font-bold text-[#db2944]">
-            CINEFLIX
+            CINEFLIM
           </span>
         </button>
         <SearchBox

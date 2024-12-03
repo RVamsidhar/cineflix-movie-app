@@ -1,6 +1,6 @@
-# CINEFLIX
+# CINEFLIM
 
-A simple movie website to discover and search movies, read movie ratings and genres etc
+Discover your favorite movies with Cineflim - an online platform that makes it easy to search for movies
 
 ## Tech Stack
 
