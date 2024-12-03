@@ -2,6 +2,8 @@
 
 Discover your favorite movies with Cineflim - an online platform that makes it easy to search for movies
 
+[Live Demo](https://cineflim.netlify.app/)
+
 ## Tech Stack
 
 **React, Tailwind CSS**
