@@ -4,7 +4,7 @@
 
 Discover your favorite movies with PopcornFlix - an online platform that makes it easy to search for movies
 
-[Live Demo](https://cineflim.netlify.app/)
+[Live Demo](https://popcornflix-movies.netlify.app/)
 
 ## Tech Stack
 
