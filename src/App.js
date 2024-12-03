@@ -80,7 +80,7 @@ function App() {
     <div className="flex flex-col gap-4">
       <header className="m-4 grid grid-cols-3">
         <button onClick={handleHomePageReset} className="place-self-start">
-          <span className="mx-4 my-8 rounded px-0 py-2 text-5xl font-bold text-[#db2944]">
+          <span className="mx-4 my-8 rounded px-0 py-2 text-4xl font-bold text-[#db2944]">
             POPCORNFLIX
           </span>
         </button>
