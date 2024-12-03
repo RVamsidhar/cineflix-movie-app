@@ -1,8 +1,8 @@
-# CINEFILM
+# POPCORNFLIX
 
-<img src="https://raw.githubusercontent.com/RVamsidhar/cineflix-movie-app/main/.github/images/Cineflix.png" width="400" /> <img src="https://raw.githubusercontent.com/RVamsidhar/cineflix-movie-app/main/.github/images/Popup.png" width="400" />
+<img src="https://raw.githubusercontent.com/RVamsidhar/cineflix-movie-app/main/.github/images/PopcornFlix.png" width="400" /> <img src="https://raw.githubusercontent.com/RVamsidhar/cineflix-movie-app/main/.github/images/Popup.png" width="400" />
 
-Discover your favorite movies with Cinefilm - an online platform that makes it easy to search for movies
+Discover your favorite movies with PopcornFlix - an online platform that makes it easy to search for movies
 
 [Live Demo](https://cineflim.netlify.app/)
 
