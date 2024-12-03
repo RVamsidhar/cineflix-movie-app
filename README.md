@@ -15,4 +15,4 @@ A simple movie website to discover and search movies, read movie ratings and gen
 
 ## Credits
 
-[TMDB API](https://developer.themoviedb.org/reference/intro/getting-started "TMDB API") (Movie Data API)
+[TMDB API](https://developer.themoviedb.org/reference/ "TMDB API") (Movie Data API)
