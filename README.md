@@ -1,5 +1,7 @@
 # CINEFLIM
 
+<img src="https://raw.githubusercontent.com/RVamsidhar/cineflix-movie-app/main/.github/images/Cineflix.png" width="400">
+
 Discover your favorite movies with Cineflim - an online platform that makes it easy to search for movies
 
 [Live Demo](https://cineflim.netlify.app/)
